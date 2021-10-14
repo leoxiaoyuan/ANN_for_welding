@@ -1,0 +1,48 @@
+<Description>
+   ***  ABAQUS/ABQcaeK rank 0 received the SIGABRT signal
+</Description>
+
+<Context>
+   UNKNOWN
+</Context>
+
+<Callstack>
+  1)  ucrtbase.dll                abort                                   
+  2)  ucrtbase.dll                terminate                               
+  3)  VCRUNTIME140.dll            is_exception_typeof                     
+  4)  VCRUNTIME140.dll            is_exception_typeof                     
+  5)  VCRUNTIME140.dll            _CxxFrameHandler3                       
+  6)  ntdll.dll                   RtlRaiseException                       
+  7)  ntdll.dll                   RtlRaiseException                       
+  8)  KERNELBASE.dll              RaiseException                          
+  9)  VCRUNTIME140.dll            CxxThrowException                       
+ 10)  ABQSMAInbVwrIPC.dll         nex_PrimException<enum ipc_IPCMsgErrorTypeEnm,1>::Propagate
+ 11)  ABQSMAInbVwrIPC.dll         ipc_Socket::Send                        
+ 12)  ABQSMAInbVwrIPC.dll         ipc_OsokStreamDevice::write             
+ 13)  ABQSMAInbVwrIPC.dll         ipc_OsokStreamDevice::pushFull          
+ 14)  ABQSMAAbuBasicUtils.dll     bio_Odevice::oRemnant                   
+ 15)  ABQSMAAbuBasicUtils.dll     bio_Ofilter::longMove                   
+ 16)  ABQSMAAbuGeom.dll           idb_MementoWrite::Flush                 
+ 17)  ABQSMAAbuGeom.dll           idb_WriteListObj::~idb_WriteListObj     
+ 18)  ABQSMAAbuGeom.dll           idb_MementoWrite::Flush                 
+ 19)  ABQSMAAbuGeom.dll           idb_MementoWrite::Flush                 
+ 20)  ABQSMAAbuGeom.dll           idb_MementoWrite::Flush                 
+</Callstack>
+
+<Memory>
+   <Current>            6410 MB </Current>
+   <Resident>           2072 MB </Resident>
+   <Physical>          16304 MB </Physical>
+   <Limit>                 0 MB </Limit>
+   <Accessible>        16304 MB </Accessible>
+   <Allocator>            DL    </Allocator>
+</Memory>
+
+<Directories>
+  <current> H:\PhD_data\CSF_results\extracted_data </current> 
+     <temp> C:\Users\leoxi\AppData\Local\Temp </temp>
+</Directories>
+
+<Installation>
+</Installation>
+

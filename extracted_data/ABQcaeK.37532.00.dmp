@@ -1,0 +1,22 @@
+<Description>
+    ABQcaeK.exe / rank 0 / thread 0  encountered a system exception 0xC0000005 (EXCEPTION_ACCESS_VIOLATION)
+
+</Description>
+
+<Callstack>
+KERNELBASE.dll                 RaiseException                
+VCRUNTIME140.dll               is_exception_typeof           
+ntdll.dll                      RtlCaptureContext2            
+ABQSMAInbVwrIPC.dll            ipc_Actor::Receive            
+ABQSMAInbVwrIPC.dll            ipc_Monitor::onSocketRead     
+ABQSMAInbVwrIPC.dll            ipc_Monitor::handle           
+ABQSMAFoxFoxAPI.dll            FXApp::getNextEvent           
+ABQSMAFoxFoxAPI.dll            FXApp::run                    
+ABQSMAInkVwrKer.dll            ker_KernelActor::Main         
+ABQSMAInkVwrKer.dll            ker_main                      
+ABQcaeK.exe                    BasicLicenser::PreHeartbeat   
+ABQcaeK.exe                    BasicLicenser::PreHeartbeat   
+ABQcaeK.exe                    BasicLicenser::GetServersListingFlag
+KERNEL32.DLL                   BaseThreadInitThunk           
+ntdll.dll                      RtlUserThreadStart            
+</Callstack>
