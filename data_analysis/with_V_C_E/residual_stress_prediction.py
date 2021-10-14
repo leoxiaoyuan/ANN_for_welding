@@ -41,7 +41,7 @@ def data_import(csv_file_name):
     return x, y
 
 # Import dataset
-x, y = data_import('H:\PhD_data\CSF_results\extracted_data\simulation_data_new.csv')
+x, y = data_import(r'extracted_data/simulation_data_with_V_C_E.csv')
 
 X_train, X_test, Y_train, Y_test = train_test_split(x,y,test_size=1/10.0, random_state=0)
 # Normalization

@@ -5,6 +5,6 @@ import pandas as pd
 from matplotlib import cm
 
 # read data from txt
-all_data = pd.read_csv('extracted_data/simulation_data_new.txt', sep='\t')
+all_data = pd.read_csv(r'extracted_data/simulation_data_with_V_C_E.csv', sep='\t')
 print(all_data.head())
 

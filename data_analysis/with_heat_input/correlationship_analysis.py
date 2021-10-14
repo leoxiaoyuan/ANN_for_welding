@@ -2,7 +2,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 
-csv_file_name = 'H:\PhD_data\CSF_results\extracted_data\simulation_data.csv'
+csv_file_name = r'extracted_data/simulation_data_with_heat_input.csv'
 raw_data = pd.read_csv(csv_file_name).dropna()
 processed_data = []
 for row in range(raw_data.shape[0]):

@@ -36,11 +36,11 @@ def data_import(csv_file_name):
     '''
     raw_data = pd.read_csv(csv_file_name,header=None).dropna()
     x = raw_data.iloc[:,0:4]
-    y = raw_data.iloc[:,4:6]
+    y = raw_data.iloc[:,6:]
     return x, y
 
 # Import dataset
-x, y = data_import('H:\PhD_data\CSF_results\extracted_data\simulation_data.csv')
+x, y = data_import(r'extracted_data/simulation_data_with_heat_input.csv')
 X_train, X_test, Y_train, Y_test = train_test_split(x,y,test_size=1/7.0, random_state=0)
 # Normalization
 scaler_X = StandardScaler()
@@ -55,7 +55,7 @@ pca.fit(scaled_train_X)
 train_X_pca = pca.transform(scaled_train_X)
 test_X_pca = pca.transform(scaled_test_X)
 
-
+print(train_X_pca)
 def build_model(N_hidden_nodes, input_dim, N_outputs):
   model = keras.Sequential([
     keras.layers.Dense(N_hidden_nodes, activation=tf.nn.leaky_relu, input_shape=(input_dim,)),
@@ -64,11 +64,11 @@ def build_model(N_hidden_nodes, input_dim, N_outputs):
 
   
   model.compile(loss='mse',
-                optimizer='SGD',
+                optimizer=tf.keras.optimizers.RMSprop(0.001),
                 metrics=['mse'])
   return model
 #build model
-model = build_model(200, 4, 2)
+model = build_model(200, 4, 61)
 model.summary()
 
 history = model.fit(scaled_train_X, scaled_train_Y, batch_size=1, epochs=200, 
@@ -76,26 +76,33 @@ history = model.fit(scaled_train_X, scaled_train_Y, batch_size=1, epochs=200,
 predictdata = model.predict(scaled_test_X)
 oringin_data = Y_test
 predict_data = scaler_Y.inverse_transform(predictdata)
-plot_history(history)
+# plot_history(history)
 
-model = build_model(200, 4, 2)
-model.summary()
-history_pca = model.fit(scaled_train_X, scaled_train_Y, batch_size=1, epochs=200, 
+model_pca = build_model(200, 4, 61)
+model_pca.summary()
+history_pca = model_pca.fit(scaled_train_X, scaled_train_Y, batch_size=1, epochs=200, 
                     verbose=1, validation_split=0.2)
-predictdata_pca = model.predict(scaled_test_X)
+predictdata_pca = model_pca.predict(scaled_test_X)
 predict_data_pca = scaler_Y.inverse_transform(predictdata_pca)
-plot_history(history_pca)
+# plot_history(history_pca)
 
-# print(type(predict_data))
+print(type(predict_data))
 for i in range(len(predict_data)):
-    plt.scatter('bead_width',oringin_data.iloc[i, 0],marker = '+', color = 'blue')
-    plt.scatter('bead_depth',oringin_data.iloc[i, 1],marker = 'o', color = 'blue')
-    plt.scatter('bead_width',predict_data.ravel()[0],marker = '+', color = 'green')
-    plt.scatter('bead_depth',predict_data.ravel()[1],marker = 'o', color = 'green')
-    plt.scatter('bead_width',predict_data_pca.ravel()[0],marker = '+', color = 'red')
-    plt.scatter('bead_depth',predict_data_pca.ravel()[1],marker = 'o', color = 'red')
-    # plt.plot(x,oringin_data.iloc[i,:].ravel(),label = 'Target stress')
-    # plt.plot(x,predict_data[i,:].ravel(),'r--',label = 'Predict stress')
-    # plt.plot(x,predict_data_pca[i,:].ravel(),'g--',label = 'Predict stress with PCA')
-    # plt.legend()
+    x = np.arange(0,0.182,0.003)
+    plt.plot(x,oringin_data.iloc[i,:].ravel(),label = 'Target stress')
+    plt.plot(x,predict_data[i,:].ravel(),'r--',label = 'Predict stress')
+    plt.plot(x,predict_data_pca[i,:].ravel(),'g--',label = 'Predict stress with PCA')
+    plt.title("Test-Set" + str(i))
+    plt.legend()
     plt.show()
+
+x_benchmark, y_benchmark = data_import(r'extracted_data/benchmark.csv')
+scaled_benchmark_X = scaler_X.transform(x_benchmark)
+predictdata_benchmark = model_pca.predict(scaled_benchmark_X)
+predict_data_benchmark = scaler_Y.inverse_transform(predictdata_benchmark)
+x = np.arange(0,0.182,0.003)
+plt.plot(x,y_benchmark.values.ravel(),label = 'benchmark stress')
+plt.plot(x,predict_data_benchmark[:,:].ravel(),'r--',label = 'Predict stress')
+plt.title("Benchmark")
+plt.legend()
+plt.show()
