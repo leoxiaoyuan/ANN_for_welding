@@ -2,7 +2,7 @@
 <br />
 <div align="center">
   <a href="https://github.com/leoxiaoyuan/ANN_for_welding">
-    <img src="image/Logo.jpg" alt="Logo" width="320" height="160">
+    <img src="https://github.com/leoxiaoyuan/ANN_for_welding/blob/main/image/Logo.jpg">
   </a>
 
   <h3 align="center">ANN for welding</h3>
@@ -39,7 +39,8 @@ Tensorflow and Keras are required to be installed
    ```
 
 ### Repository structure
-<img align="center" src="image/Structure.jpg" >
+![image](https://github.com/leoxiaoyuan/ANN_for_welding/blob/main/image/Structure.jpg)
+
 <br/>
 <br/>
 Folder <strong>extracted_data: </strong><br/>
