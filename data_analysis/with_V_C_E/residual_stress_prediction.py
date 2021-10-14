@@ -13,6 +13,38 @@ import matplotlib.pyplot as plt
 from sklearn.model_selection import train_test_split
 import tensorflow as tf
 from sklearn.decomposition import PCA
+from matplotlib.patches import Patch
+from matplotlib.lines import Line2D
+def get_plot(oringin_data, predict_data, predict_data_pca, i):
+    fig, ax = plt.subplots(figsize=(10,6))
+    x = np.arange(0,0.182,0.003)
+    p1 = ax.plot(x,oringin_data.ravel(),'r--', label = 'Target stress')
+    p2 = ax.plot(x,predict_data.ravel(),'g--',label = 'Predict stress')
+    p3 = ax.plot(x,predict_data_pca.ravel(),'b--',label = 'Predict stress with PCA')
+    ax.set_title("Test-Set" + str(i))
+    # ax.set_xticks(x)
+    ax.set_ylabel('Logitudinal stress (Pa)')
+    ax.yaxis.set_tick_params(direction='out')
+
+    ax2 = plt.twinx()
+    difference = predict_data.ravel() - oringin_data.ravel()
+    # difference=np.array(list(map(lambda x,y:x/y,difference,oringin_data.ravel())))
+    difference_with_pca = predict_data_pca.ravel() - oringin_data.ravel()
+    # difference_with_pca=np.array(list(map(lambda x,y:x/y,difference_with_pca,oringin_data.ravel())))
+    ymax=np.max([difference.max(),difference_with_pca.max()])*(1+0.1)
+    rects1=ax2.bar(x-0.001/2.0, difference, 0.001,  label='Difference',color="tab:brown")
+    rects2=ax2.bar(x+0.001/2.0, difference_with_pca, 0.001,  label='Difference (PCA)',color="tab:red")
+    ax2.set_ylabel('Logitudinal stress percentage error (%)')
+
+    legend_elements = [Line2D([0], [0], color='red', lw=2, label=''),
+                       Line2D([0], [0], color='green', lw=2, label=''),
+                       Line2D([0], [0], color='blue', lw=2, label=''),
+                       Patch(facecolor='tab:brown', edgecolor='b',label='Difference'),
+                       Patch(facecolor='tab:red', edgecolor='b',label='Difference with PCA'),]
+
+    ax.legend(handles=legend_elements, loc='best')
+    plt.savefig('H:/PhD_git/ANN_results/with_V_C_E/test-' + str(i) + '.jpg')
+    plt.close()
 
 def plot_history(history):
   hist = pd.DataFrame(history.history)
@@ -35,7 +67,6 @@ def data_import(csv_file_name):
     reture traing and test datasets
     '''
     raw_data = pd.read_csv(csv_file_name).dropna()
-    print(raw_data)
     x = raw_data.iloc[:,:6]
     y = raw_data.iloc[:,8:]
     return x, y
@@ -88,15 +119,9 @@ predictdata_pca = model_pca.predict(scaled_test_X)
 predict_data_pca = scaler_Y.inverse_transform(predictdata_pca)
 plot_history(history_pca)
 
-print(type(predict_data))
 for i in range(len(predict_data)):
-    x = np.arange(0,0.182,0.003)
-    plt.plot(x,oringin_data.iloc[i,:].ravel(),label = 'Target stress')
-    plt.plot(x,predict_data[i,:].ravel(),'r--',label = 'Predict stress')
-    plt.plot(x,predict_data_pca[i,:].ravel(),'g--',label = 'Predict stress with PCA')
-    plt.title("Test-Set" + str(i))
-    plt.legend()
-    plt.show()
+  get_plot(oringin_data.iloc[i,:], predict_data[i,:], predict_data_pca[i,:], i)
+
 
 # x_benchmark, y_benchmark = data_import('H:/PhD_data/CSF_results/extracted_data/benchmark.csv')
 # scaled_benchmark_X = scaler_X.transform(x_benchmark)
