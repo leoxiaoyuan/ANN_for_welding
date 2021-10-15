@@ -17,13 +17,17 @@ from matplotlib.patches import Patch
 from matplotlib.lines import Line2D
 def get_plot(oringin_data, predict_data, predict_data_pca, i):
     fig, ax = plt.subplots(figsize=(10,6))
-    x = np.arange(0,0.182,0.003)
+    x = np.arange(-90, 91,3)
+    oringin_data = oringin_data / 1000000
+    predict_data = predict_data / 1000000
+    predict_data_pca = predict_data_pca / 1000000
     p1 = ax.plot(x,oringin_data.ravel(),'r--', label = 'Target stress')
     p2 = ax.plot(x,predict_data.ravel(),'g--',label = 'Predict stress')
     p3 = ax.plot(x,predict_data_pca.ravel(),'b--',label = 'Predict stress with PCA')
     ax.set_title("Test-Set" + str(i))
     # ax.set_xticks(x)
-    ax.set_ylabel('Logitudinal stress (Pa)')
+    ax.set_ylabel('Logitudinal stress (MPa)')
+    ax.set_xlabel('Distance from specimen mid-length X(mm)')
     ax.yaxis.set_tick_params(direction='out')
 
     ax2 = plt.twinx()
@@ -32,15 +36,15 @@ def get_plot(oringin_data, predict_data, predict_data_pca, i):
     difference_with_pca = predict_data_pca.ravel() - oringin_data.ravel()
     # difference_with_pca=np.array(list(map(lambda x,y:x/y,difference_with_pca,oringin_data.ravel())))
     ymax=np.max([difference.max(),difference_with_pca.max()])*(1+0.1)
-    rects1=ax2.bar(x-0.001/2.0, difference, 0.001,  label='Difference',color="tab:brown")
-    rects2=ax2.bar(x+0.001/2.0, difference_with_pca, 0.001,  label='Difference (PCA)',color="tab:red")
-    ax2.set_ylabel('Logitudinal stress percentage error (%)')
+    rects1=ax2.bar(x-1/2.0, difference, 1, color="tab:brown")
+    rects2=ax2.bar(x+1/2.0, difference_with_pca, 1, color="tab:red")
+    ax2.set_ylabel('Error (MPa)')
 
-    legend_elements = [Line2D([0], [0], color='red', lw=2, label=''),
-                       Line2D([0], [0], color='green', lw=2, label=''),
-                       Line2D([0], [0], color='blue', lw=2, label=''),
-                       Patch(facecolor='tab:brown', edgecolor='b',label='Difference'),
-                       Patch(facecolor='tab:red', edgecolor='b',label='Difference with PCA'),]
+    legend_elements = [Line2D([0], [0], color='red', lw=2, label='Benchmark'),
+                       Line2D([0], [0], color='green', lw=2, label='ANN prediction'),
+                       Line2D([0], [0], color='blue', lw=2, label='ANN (PCA) prediction'),
+                       Patch(facecolor='tab:brown', edgecolor='b',label='Error'),
+                       Patch(facecolor='tab:red', edgecolor='b',label='Error (PCA)'),]
 
     ax.legend(handles=legend_elements, loc='best')
     plt.savefig('H:/PhD_git/ANN_results/with_V_C_E/test-' + str(i) + '.jpg')
@@ -109,7 +113,7 @@ history = model.fit(scaled_train_X, scaled_train_Y, batch_size=1, epochs=200,
 predictdata = model.predict(scaled_test_X)
 oringin_data = Y_test
 predict_data = scaler_Y.inverse_transform(predictdata)
-plot_history(history)
+# plot_history(history)
 
 model_pca = build_model(200, 6, 61)
 model_pca.summary()
@@ -117,7 +121,7 @@ history_pca = model_pca.fit(scaled_train_X, scaled_train_Y, batch_size=1, epochs
                     verbose=1, validation_split=0.2)
 predictdata_pca = model_pca.predict(scaled_test_X)
 predict_data_pca = scaler_Y.inverse_transform(predictdata_pca)
-plot_history(history_pca)
+# plot_history(history_pca)
 
 for i in range(len(predict_data)):
   get_plot(oringin_data.iloc[i,:], predict_data[i,:], predict_data_pca[i,:], i)
