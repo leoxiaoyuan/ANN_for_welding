@@ -104,7 +104,7 @@ def build_model(N_hidden_nodes, input_dim, N_outputs):
                 optimizer=tf.keras.optimizers.RMSprop(0.001),
                 metrics=['mse'])
   return model
-#build model
+
 model = build_model(200, 6, 61)
 model.summary()
 

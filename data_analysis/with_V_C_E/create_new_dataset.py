@@ -34,12 +34,13 @@ A = np.arange(100, 200.1, 1)
 E = np.arange(0.7, 0.9 , 0.01)
 
 result = select_parameters(V, A, E)
-csv_file_name = r'extracted_data\simulation_data_with_V_C_E.csv'
-raw_data = pd.read_csv(csv_file_name).dropna()
+csv_file_name = r'extracted_data/S11_along_BD.csv'
+raw_data = pd.read_csv(csv_file_name).dropna().iloc[1:, :]
 
 new_data = pd.DataFrame(columns=('bead_length', 'voltage', 'current', 'travel_speed', 
                                 'thermol_efficiency','energy_input', 'bead_width', 'bead_depth'))
-columns = np.arange(1,62,1)
+
+columns = np.arange(1,raw_data.shape[1]-5,1)
 i = 0
 stress_data = pd.DataFrame(columns = columns)
 for index in range(len(raw_data)):
@@ -54,4 +55,4 @@ for index in range(len(raw_data)):
         stress_data.loc[i] = raw_data.iloc[index,6:].values
         i += 1
 new_data = pd.concat([new_data, stress_data],axis=1)
-new_data.to_csv(r'extracted_data/simulation_data_with_V_C_E.csv', index=False)
+new_data.to_csv(r'extracted_data/S11_along_BD(V_C_E).csv', index=False)
