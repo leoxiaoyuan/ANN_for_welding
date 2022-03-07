@@ -3,15 +3,15 @@ import matplotlib.pyplot as plt
 
 import pandas as pd
 
-csv_file_name = r'extracted_data/S11_along_BD.csv'
+csv_file_name = r'extracted_data/simulation_data.csv'
 raw_data = pd.read_csv(csv_file_name, header=None).dropna()
 
 # plot stress
-x = raw_data.iloc[0,6:]
-y = raw_data.iloc[1:,6:].T
-y.index=x
-plt.plot(y)
-plt.show()
+# x = raw_data.iloc[0,6:]
+# y = raw_data.iloc[1:,6:].T
+# y.index=x
+# plt.plot(y)
+# plt.show()
 
 # plot bead width and bead depth
 x = np.arange(149)
