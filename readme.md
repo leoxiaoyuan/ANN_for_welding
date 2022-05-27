@@ -20,7 +20,7 @@
 
 
 ### About The Project
-This project aimed to develop a surrogate model to predict residual stress of a single weld bead on a plate using the welding voltage, current, travel speed, bead length and thermal efficiency of welding.
+This project aimed to develop a surrogate model to predict residual stress of a single weld bead on a plate using arc travel length, travel speed and net power input rate.
 
 
 ### Prerequisites
@@ -44,7 +44,7 @@ Tensorflow and Keras are required to be installed
 <br/>
 <br/>
 Folder <strong>extracted_data: </strong><br/>
-contains 150 sets of data of residual stress of sampled welding simulations. with_heat_input means only the welding length, welding speed and welding heat input are deemed as input variables. with_V_C_E means the heat input is devided into there other variables, which are welding current, welding voltage and welding thermal efficiency. So the input variables of this dataset are welding lenth, travel speed, welding current, welding voltage and welding thermal efficiency.
+contains 205 sets of data of residual stress of sampled welding simulations. with_heat_input means only the welding length, welding speed and welding heat input are deemed as input variables. with_V_C_E means the heat input is devided into there other variables, which are welding current, welding voltage and welding thermal efficiency. So the input variables of this dataset are welding lenth, travel speed, welding current, welding voltage and welding thermal efficiency.
 <br/>
 <br/>
 Folder <strong>data_analysis: </strong><br/>
